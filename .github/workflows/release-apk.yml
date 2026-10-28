@@ -1,0 +1,30 @@
+name: Release APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/release-apk.yml"
+      - "app-debug.apk"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Decode APK and create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          base64 -d app-debug.apk > liquid-dialer-v2.0.apk
+          ls -l liquid-dialer-v2.0.apk
+          tag=v2.0
+          if gh release view "$tag" > /dev/null 2>&1; then
+            gh release upload "$tag" liquid-dialer-v2.0.apk --clobber
+          else
+            gh release create "$tag" liquid-dialer-v2.0.apk --title "Liquid Dialer v2.0" --notes "Latest build: real contacts and calls, default dialer support, call screen with record, notes, mute, speaker, keypad and all permissions."
+          fi
