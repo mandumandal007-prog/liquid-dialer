@@ -1,0 +1,8 @@
+{
+  "name": "Liquid Dialer",
+  "short_name": "Dialer",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#070a12",
+  "theme_color": "#070a12"
+}
